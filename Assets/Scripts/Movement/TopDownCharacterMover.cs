@@ -7,6 +7,7 @@ using UnityEngine;
 public class TopDownCharacterMover : MonoBehaviour
 {
     private InputHandler _input;
+    
 
     [SerializeField]
     private bool RotateTowardMouse;
