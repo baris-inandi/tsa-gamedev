@@ -2,75 +2,89 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RiptideNetworking;
 
 [RequireComponent(typeof(InputHandler))]
 public class TopDownCharacterMover : MonoBehaviour
 {
-	private InputHandler _input;
+    private InputHandler _input;
 
 
-	[SerializeField]
-	private bool RotateTowardMouse;
+    [SerializeField]
+    private bool RotateTowardMouse;
 
-	[SerializeField]
-	private float MovementSpeed;
-	[SerializeField]
-	private float RotationSpeed;
+    [SerializeField]
+    private float MovementSpeed;
+    [SerializeField]
+    private float RotationSpeed;
 
-	[SerializeField]
-	private Camera Camera;
+    [SerializeField]
+    private Camera Camera;
 
-	private void Awake()
-	{
-		_input = GetComponent<InputHandler>();
-	}
+    private void Awake()
+    {
+        _input = GetComponent<InputHandler>();
+    }
 
-	// Update is called once per frame
-	void Update()
-	{
+    private void OnEnable()
+    {
+        InvokeRepeating("Move", 0f, 0.04f);
+        Camera = Camera.main;
+    }
 
-		var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
-		var movementVector = MoveTowardTarget(targetVector);
+    // Update is called once per frame
+    void Update()
+    {
 
-		if (!RotateTowardMouse)
-		{
-			RotateTowardMovementVector(movementVector);
-		}
-		if (RotateTowardMouse)
-		{
-			RotateFromMouseVector();
-		}
+        var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
+        var movementVector = MoveTowardTarget(targetVector);
 
-	}
+        if (!RotateTowardMouse)
+        {
+            RotateTowardMovementVector(movementVector);
+        }
+        if (RotateTowardMouse)
+        {
+            RotateFromMouseVector();
+        }
 
-	private void RotateFromMouseVector()
-	{
-		Ray ray = Camera.ScreenPointToRay(_input.MousePosition);
+    }
 
-		if (Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance: 300f))
-		{
-			var target = hitInfo.point;
-			target.y = transform.position.y;
-			transform.LookAt(target);
-		}
-	}
+    private void RotateFromMouseVector()
+    {
+        Ray ray = Camera.ScreenPointToRay(_input.MousePosition);
 
-	private Vector3 MoveTowardTarget(Vector3 targetVector)
-	{
-		var speed = MovementSpeed * Time.deltaTime;
-		// transform.Translate(targetVector * (MovementSpeed * Time.deltaTime)); Demonstrate why this doesn't work
-		//transform.Translate(targetVector * (MovementSpeed * Time.deltaTime), Camera.gameObject.transform);
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance: 300f))
+        {
+            var target = hitInfo.point;
+            target.y = transform.position.y;
+            transform.LookAt(target);
+        }
+    }
 
-		targetVector = Quaternion.Euler(0, Camera.gameObject.transform.rotation.eulerAngles.y, 0) * targetVector;
-		var targetPosition = transform.position + targetVector * speed;
-		transform.position = targetPosition;
-		return targetVector;
-	}
+    private Vector3 MoveTowardTarget(Vector3 targetVector)
+    {
+        var speed = MovementSpeed * Time.deltaTime;
+        // transform.Translate(targetVector * (MovementSpeed * Time.deltaTime)); Demonstrate why this doesn't work
+        //transform.Translate(targetVector * (MovementSpeed * Time.deltaTime), Camera.gameObject.transform);
 
-	private void RotateTowardMovementVector(Vector3 movementDirection)
-	{
-		if (movementDirection.magnitude == 0) { return; }
-		var rotation = Quaternion.LookRotation(movementDirection);
-		transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, RotationSpeed);
-	}
+        targetVector = Quaternion.Euler(0, Camera.gameObject.transform.rotation.eulerAngles.y, 0) * targetVector;
+        var targetPosition = transform.position + targetVector * speed;
+        transform.position = targetPosition;
+        return targetVector;
+    }
+
+    private void RotateTowardMovementVector(Vector3 movementDirection)
+    {
+        if (movementDirection.magnitude == 0) { return; }
+        var rotation = Quaternion.LookRotation(movementDirection);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, RotationSpeed);
+    }
+
+    public void Move()
+    {
+        Message message = Message.Create(MessageSendMode.reliable, Packets.ClientToHostId.playerMovement);
+        message.AddVector3(transform.position).AddQuaternion(transform.rotation);
+        CheckMessage.CheckMsg(message);
+    }
 }
