@@ -4,6 +4,16 @@ using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
 
+public enum HostToClientId : ushort
+{
+    welcomePlayer = 1,
+    playerMovement,
+}
+public enum ClientToHostId : ushort
+{
+    playerName = 1,
+    playerInput,
+}
 
 public class PeerType
 {
@@ -14,7 +24,6 @@ public class PeerType
     }
 
     public static GamePeerType type;
-    public static GamePeerType otherType;
 
 }
 

@@ -90,14 +90,4 @@ public class Host : MonoBehaviour
         Debug.Log("Client Disconnected. Brp!");
         //Destroy(Player.List[e.Id].gameObject);
     }
-
-    public void SendGameStartedDialog()
-    {
-        Message msg = Message.Create(MessageSendMode.reliable, Packets.ClientToHostId.gameStarted);
-        Server.Send(msg, 1);
-    }
-
-    #region Special Packets
-
-    #endregion
 }

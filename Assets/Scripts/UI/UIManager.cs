@@ -7,8 +7,9 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [Header("Input Fields")]
+
     [SerializeField]
-    private TMP_InputField IPField;
+    private TMP_Dropdown ChooseIPType;
 
     [Header("Main Objects")]
     [SerializeField]
@@ -21,8 +22,6 @@ public class UIManager : MonoBehaviour
     [Header("Child Objects")]
     [SerializeField]
     private TMP_Text HostWaitingText;
-    [SerializeField]
-    private TMP_Text HostWaitingIPText;
     [SerializeField]
     private TMP_Text ClientWaitingText;
     [SerializeField]
@@ -53,23 +52,20 @@ public class UIManager : MonoBehaviour
     public void HostGame()
     {
         PeerType.type = PeerType.GamePeerType.host;
-        PeerType.otherType = PeerType.GamePeerType.client;
         gameObject.AddComponent<Host>();
         WelcomePanel.SetActive(false);
         HostWait.SetActive(true);
-        HostWaitingIPText.text = $"Current IP Adress Is: {IPGet.GetIPV4.GetLocalIPAddress()}";
     }
 
     public void JoinGame()
     {
         PeerType.type = PeerType.GamePeerType.client;
-        PeerType.otherType = PeerType.GamePeerType.host;
         gameObject.AddComponent<LocalClient>();
         Debug.Log("ChooseAdalah?");
-        if (IPField.text == string.Empty)
-            LocalClient.Instance.Connect("127.0.0.1");
+        if (ChooseIPType.value == 0)
+            LocalClient.Instance.Connect(IPGet.GetIPV4.GetLocalIPAddress());
         else
-            LocalClient.Instance.Connect(IPField.text);
+            LocalClient.Instance.Connect("127.0.0.1");
         WelcomePanel.SetActive(false);
         ClientJoin.SetActive(true);
     }
