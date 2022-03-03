@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RiptideNetworking;
 
 [RequireComponent(typeof(InputHandler))]
 public class TopDownCharacterMover : MonoBehaviour
 {
     private InputHandler _input;
-    
+
 
     [SerializeField]
     private bool RotateTowardMouse;
@@ -25,10 +26,16 @@ public class TopDownCharacterMover : MonoBehaviour
         _input = GetComponent<InputHandler>();
     }
 
+    private void OnEnable()
+    {
+        InvokeRepeating("Move", 0f, 0.04f);
+        Camera = Camera.main;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+
         var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
         var movementVector = MoveTowardTarget(targetVector);
 
@@ -69,8 +76,15 @@ public class TopDownCharacterMover : MonoBehaviour
 
     private void RotateTowardMovementVector(Vector3 movementDirection)
     {
-        if(movementDirection.magnitude == 0) { return; }
+        if (movementDirection.magnitude == 0) { return; }
         var rotation = Quaternion.LookRotation(movementDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, RotationSpeed);
+    }
+
+    public void Move()
+    {
+        Message message = Message.Create(MessageSendMode.reliable, Packets.ClientToHostId.playerMovement);
+        message.AddVector3(transform.position).AddQuaternion(transform.rotation);
+        CheckMessage.CheckMsg(message);
     }
 }
