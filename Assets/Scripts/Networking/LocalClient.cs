@@ -55,7 +55,7 @@ public class LocalClient : MonoBehaviour
 
     public void Connect(string _ip)
     {
-        Client.Connect($"{_ip}:{port}");
+        Client.Connect("10.4.7.36" + port);
     }
 
     private void DidConnect(object sender, EventArgs e)

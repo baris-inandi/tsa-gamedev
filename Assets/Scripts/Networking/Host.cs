@@ -20,7 +20,7 @@ public class Host : MonoBehaviour
             }
         }
     }
-    private ushort port = 7777;
+    private ushort port = 8007;
     private ushort maxClientCount = 2;
     [SerializeField] private GameObject playerPrefab;
 
