@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
         gameObject.AddComponent<Host>();
         WelcomePanel.SetActive(false);
         HostWait.SetActive(true);
-        HostWaitingIPText.text = $"Gamecode Is: {ZgUtils.GenerateGameCode.GenerateGameCode.Generate("132.98.1.4")}";
+        HostWaitingIPText.text = $"Gamecode Is: {ZgUtils.GenerateGameCode.GenerateGameCode.Generate(IPGet.GetIPV4.GetLocalIPAddress())}";
     }
 
     public void JoinGame()

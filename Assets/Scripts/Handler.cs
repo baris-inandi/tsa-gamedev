@@ -29,7 +29,7 @@ public class Handler : MonoBehaviour
     }
     void Awake()
     {
-        Instance = this;
+		Instance = this;
         DontDestroyOnLoad(gameObject);
 	}
 
@@ -38,7 +38,7 @@ public class Handler : MonoBehaviour
         SceneManager.LoadScene("Top Down Movement");
         Host.Instance.SendGameStartedDialog();
         StartCoroutine(WaitFrame());
-    }
+	}
     IEnumerator WaitFrame()
     {
         yield return null;
