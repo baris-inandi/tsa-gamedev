@@ -10,6 +10,7 @@ public class Packets
     {
         gameStarted = 1,
         playerMovement,
+        sendHP,
     }
     internal enum ClientToHostId : ushort
     {
@@ -30,4 +31,10 @@ public class Packets
         Handler.Instance.players[(int)PeerType.otherType].transform.position = message.GetVector3();
         Handler.Instance.players[(int)PeerType.otherType].transform.rotation = message.GetQuaternion();
     }
+
+    [MessageHandler((ushort)HostToClientId.sendHP)]
+    private static void updateHP(Message message)
+    {
+		Handler.Instance.players[message.GetShort()].hp += message.GetShort();
+	}
 }

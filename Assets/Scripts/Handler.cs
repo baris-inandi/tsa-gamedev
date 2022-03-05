@@ -7,9 +7,15 @@ public class Handler : MonoBehaviour
 {
 
     [SerializeField]
-    private GameObject LocalPlayerPrefab;
+    private GameObject HostPlayerPrefab;
     [SerializeField]
-    private GameObject OtherPlayerPrefab;
+    private GameObject ClientPlayerPrefab;
+
+    [SerializeField]
+    private Material HostMaterial;
+    [SerializeField]
+    private GameObject ClientMaterial;
+
 
     public List<Player> players = new List<Player>(2);
     private static Handler _singleton;
@@ -47,30 +53,56 @@ public class Handler : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        GameObject player;
-        GameObject player2;
+        GameObject MainPlayer;
+        GameObject OtherPlayer;
         if (PeerType.type == PeerType.GamePeerType.host)
         {
-            player = GameObject.Find("HostPlayer");
-            players.Add(player.AddComponent<Player>());
-            player.transform.position = new Vector3(-25, 5, 25);
-            player.GetComponent<Player>().id = 0;
-            player2 = GameObject.Find("ConnectedPlayer");
-            player2.transform.position = new Vector3(-25, 5, 35);
-            players.Add(player2.AddComponent<Player>());
-            player2.GetComponent<Player>().id = 1;
+			GameObject tempObject = GameObject.Find("HostPlayer_other");
+			Vector3 tempVec = tempObject.transform.position;
+            Quaternion q = tempObject.transform.rotation;			
+            Destroy(tempObject);
+
+			MainPlayer = Instantiate(HostPlayerPrefab, tempVec, q);
+			MainPlayer.name = "HostPlayer";
+			tempVec = Vector3.zero;
+			q = Quaternion.identity;
+			tempObject = null;
+
+
+			players.Add(MainPlayer.AddComponent<Player>());
+            MainPlayer.GetComponent<Player>().id = 0;
+			Camera.main.GetComponent<CameraFollow>().target = MainPlayer.transform;
+			MainPlayer.AddComponent<InputHandler>();
+			MainPlayer.AddComponent<TopDownCharacterMover>();
+
+			OtherPlayer = GameObject.Find("ConnectedPlayer_other");
+			OtherPlayer.name = "ConnectedPlayer";
+            players.Add(OtherPlayer.AddComponent<Player>());
+            OtherPlayer.GetComponent<Player>().id = 1;
         }
         else
         {
-            player2 = GameObject.Find("ConnectedPlayer");
-            players.Add(player2.AddComponent<Player>());
-            player2.transform.position = new Vector3(-25, 5, 25);
-            player2.GetComponent<Player>().id = 0;
-            player = GameObject.Find("HostPlayer");
-            players.Add(player.AddComponent<Player>());
-            player.GetComponent<Player>().id = 1;
-            player.transform.position = new Vector3(-25, 5, 35);
-        }
+			OtherPlayer = GameObject.Find("HostPlayer_other");
+			OtherPlayer.name = "HostPlayer";
+            players.Add(OtherPlayer.AddComponent<Player>());
+            OtherPlayer.GetComponent<Player>().id = 0;
 
+            GameObject tempObject = GameObject.Find("ConnectedPlayer_other");
+			Vector3 tempVec = tempObject.transform.position;
+            Quaternion q = tempObject.transform.rotation;
+			Destroy(tempObject);
+
+			MainPlayer = Instantiate(ClientPlayerPrefab, tempVec, q);
+			MainPlayer.name = "ConnectedPlayer";
+			tempVec = Vector3.zero;
+			q = Quaternion.identity;
+			tempObject = null;
+
+			players.Add(MainPlayer.AddComponent<Player>());
+            MainPlayer.GetComponent<Player>().id = 1;
+			Camera.main.GetComponent<CameraFollow>().target = MainPlayer.transform;
+			MainPlayer.AddComponent<InputHandler>();
+			MainPlayer.AddComponent<TopDownCharacterMover>();
+        }
     }
 }
