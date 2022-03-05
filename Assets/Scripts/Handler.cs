@@ -31,7 +31,7 @@ public class Handler : MonoBehaviour
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
+	}
 
     public void StartGame()
     {

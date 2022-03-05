@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
         gameObject.AddComponent<Host>();
         WelcomePanel.SetActive(false);
         HostWait.SetActive(true);
-        HostWaitingIPText.text = $"Current IP Adress Is: {IPGet.GetIPV4.GetLocalIPAddress()}";
+        HostWaitingIPText.text = $"Gamecode Is: {ZgUtils.GenerateGameCode.GenerateGameCode.Generate("132.98.1.4")}";
     }
 
     public void JoinGame()
@@ -69,7 +69,7 @@ public class UIManager : MonoBehaviour
         if (IPField.text == string.Empty)
             LocalClient.Instance.Connect("127.0.0.1");
         else
-            LocalClient.Instance.Connect(IPField.text);
+            LocalClient.Instance.Connect(ZgUtils.GenerateGameCode.GenerateGameCode.DecodeToIP(IPField.text));
         WelcomePanel.SetActive(false);
         ClientJoin.SetActive(true);
     }
