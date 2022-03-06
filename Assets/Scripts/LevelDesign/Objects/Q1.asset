@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc083957fd3184a76a02a441b7c760e1, type: 3}
   m_Name: Q1
   m_EditorClassIdentifier: 
-  question: 
-  Answer_A: 
-  Answer_B: 
-  Answer_C: 
-  Answer_D: 
+  question: When Was The Empire Of Egypt Established?
+  Answer_A: Ms. 1400
+  Answer_B: Ms. 1439
+  Answer_C: Ms. 1453
+  Answer_D: Ms. 1456
   RightAnswer: 1
