@@ -54,6 +54,8 @@ public class UIManager : MonoBehaviour
     {
         PeerType.type = PeerType.GamePeerType.host;
         PeerType.otherType = PeerType.GamePeerType.client;
+		PeerType.MainPlayerTag = "Host";		
+        PeerType.OtherPlayerTag = "Client";
         gameObject.AddComponent<Host>();
         WelcomePanel.SetActive(false);
         HostWait.SetActive(true);
@@ -63,7 +65,9 @@ public class UIManager : MonoBehaviour
     public void JoinGame()
     {
         PeerType.type = PeerType.GamePeerType.client;
-        PeerType.otherType = PeerType.GamePeerType.host;
+		PeerType.otherType = PeerType.GamePeerType.host;
+		PeerType.MainPlayerTag = "Client";		
+        PeerType.MainPlayerTag = "Host";
         gameObject.AddComponent<LocalClient>();
         Debug.Log("ChooseAdalah?");
         if (IPField.text == string.Empty)

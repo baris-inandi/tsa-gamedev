@@ -12,6 +12,6 @@ public class Question : ScriptableObject
 	public string Answer_D;
 
     [Range(1,4)]
-	public byte RightAnswer;
+	public byte RightAnswer = 1;
 
 }

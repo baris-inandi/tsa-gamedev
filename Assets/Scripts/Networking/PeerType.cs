@@ -15,6 +15,8 @@ public class PeerType
 
     public static GamePeerType type;
     public static GamePeerType otherType;
+	public static string MainPlayerTag;
+	public static string OtherPlayerTag;
 }
 
 namespace IPGet
