@@ -72,8 +72,6 @@ public class Handler : MonoBehaviour
 			players.Add(MainPlayer.AddComponent<Player>());
             MainPlayer.GetComponent<Player>().id = 0;
 			Camera.main.GetComponent<CameraFollow>().target = MainPlayer.transform;
-			MainPlayer.AddComponent<InputHandler>();
-			MainPlayer.AddComponent<TopDownCharacterMover>();
 
 			OtherPlayer = GameObject.Find("ConnectedPlayer_other");
 			OtherPlayer.name = "ConnectedPlayer";
@@ -101,8 +99,6 @@ public class Handler : MonoBehaviour
 			players.Add(MainPlayer.AddComponent<Player>());
             MainPlayer.GetComponent<Player>().id = 1;
 			Camera.main.GetComponent<CameraFollow>().target = MainPlayer.transform;
-			MainPlayer.AddComponent<InputHandler>();
-			MainPlayer.AddComponent<TopDownCharacterMover>();
         }
     }
 }
