@@ -535,3 +535,4 @@ $RECYCLE.BIN/
 
 *.exe
 [bB]uild*
+*.dll
