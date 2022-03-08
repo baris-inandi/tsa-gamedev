@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Handler : MonoBehaviour
 {
 
+    #region Singleton and Attributes
     [SerializeField]
     private GameObject HostPlayerPrefab;
     [SerializeField]
@@ -38,7 +39,9 @@ public class Handler : MonoBehaviour
 		Instance = this;
         DontDestroyOnLoad(gameObject);
 	}
+    #endregion
 
+    #region Player Spawning
     public void StartGame()
     {
         SceneManager.LoadScene("Top Down Movement");
@@ -101,4 +104,6 @@ public class Handler : MonoBehaviour
 			Camera.main.GetComponent<CameraFollow>().target = MainPlayer.transform;
         }
     }
+    #endregion
+
 }

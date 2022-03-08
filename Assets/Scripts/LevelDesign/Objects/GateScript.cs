@@ -9,11 +9,11 @@ public class GateScript : MonoBehaviour
 
     public void TriggerEnter()
     {
-		Debug.Log("TriggerEnter");
-	}
+		  Debug.Log("TriggerEnter");
+	  }
 
     public void TriggerExit()
     {
-		Debug.Log("TriggerExit");
+		  Debug.Log("TriggerExit");
     }
 }

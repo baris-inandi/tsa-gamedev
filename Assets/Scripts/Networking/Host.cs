@@ -21,7 +21,7 @@ public class Host : MonoBehaviour
         }
     }
     private ushort port = 7777;
-    private ushort maxClientCount = 2;
+    private ushort maxClientCount = 1;
     [SerializeField] private GameObject playerPrefab;
 
     public GameObject PlayerPrefab => playerPrefab;
